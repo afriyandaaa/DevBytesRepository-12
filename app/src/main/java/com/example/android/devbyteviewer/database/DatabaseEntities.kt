@@ -27,9 +27,7 @@ import com.example.android.devbyteviewer.domain.DevByteVideo
  */
 
 
-/**
- * DatabaseVideo represents a video entity in the database.
- */
+//Database Video yang mewakili entitas video dalam database.
 @Entity
 data class DatabaseVideo constructor(
         @PrimaryKey
@@ -40,9 +38,7 @@ data class DatabaseVideo constructor(
         val thumbnail: String)
 
 
-/**
- * Map DatabaseVideos to domain entities
- */
+//Petakan DatabaseVideos ke entitas domain
 fun List<DatabaseVideo>.asDomainModel(): List<DevByteVideo> {
         return map {
                 DevByteVideo(

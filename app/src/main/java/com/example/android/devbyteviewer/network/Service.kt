@@ -26,9 +26,7 @@ import retrofit2.http.GET
 // If you add more services, split this to multiple files and make sure to share the retrofit
 // object between services.
 
-/**
- * A retrofit service to fetch a devbyte playlist.
- */
+//Layanan retrofit untuk mengambil daftar putar devbyte.
 interface DevbyteService {
     @GET("devbytes")
     suspend fun getPlaylist(): NetworkVideoContainer
@@ -39,7 +37,7 @@ interface DevbyteService {
  */
 object DevByteNetwork {
 
-    // Configure retrofit to parse JSON and use coroutines
+    // Konfigurasi retrofit untuk mengurai JSON dan menggunakan coroutine
     private val retrofit = Retrofit.Builder()
             .baseUrl("https://android-kotlin-fun-mars-server.appspot.com/")
             .addConverterFactory(MoshiConverterFactory.create())

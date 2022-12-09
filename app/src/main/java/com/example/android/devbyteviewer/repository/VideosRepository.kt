@@ -27,11 +27,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
-/**
- * Repository for fetching devbyte videos from the network and storing them on disk
- */
+//Repositori untuk mengambil video devbyte dari jaringan dan menyimpannya di disk
 class VideosRepository(private val database: VideosDatabase) {
-
+    //LiveData untuk membaca playlist video dari database.
     val videos: LiveData<List<DevByteVideo>> = Transformations.map(database.videoDao.getVideos()) {
         it.asDomainModel()
     }
@@ -44,10 +42,13 @@ class VideosRepository(private val database: VideosDatabase) {
      * function is now safe to call from any thread including the Main thread.
      *
      */
+    //metode refreshVideos dengan pernyataan log untuk melacak saat dipanggil
     suspend fun refreshVideos() {
         withContext(Dispatchers.IO) {
             Timber.d("refresh videos is called");
+            //ambil daftar putar video DevByte dari jaringan menggunakan instance layanan Retrofit, DevByteNetwork.
             val playlist = DevByteNetwork.devbytes.getPlaylist()
+            //Untuk menyimpan playlist
             database.videoDao.insertAll(playlist.asDatabaseModel())
         }
     }

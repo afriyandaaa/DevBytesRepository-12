@@ -40,9 +40,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class NetworkVideoContainer(val videos: List<NetworkVideo>)
 
-/**
- * Videos represent a devbyte that can be played.
- */
+//Video mewakili devbyte yang dapat diputar.
 @JsonClass(generateAdapter = true)
 data class NetworkVideo(
         val title: String,
@@ -67,9 +65,7 @@ fun NetworkVideoContainer.asDomainModel(): List<DevByteVideo> {
 }
 
 
-/**
- * Convert Network results to database objects
- */
+//Mengonversi hasil Jaringan ke objek basis data
 fun NetworkVideoContainer.asDatabaseModel(): List<DatabaseVideo> {
     return videos.map {
         DatabaseVideo(

@@ -43,26 +43,17 @@ import java.io.IOException
  */
 class DevByteViewModel(application: Application) : AndroidViewModel(application) {
 
-    /**
-     * The data source this ViewModel will fetch results from.
-     */
+   //ViewModel ini akan mengambil hasil
     private val videosRepository = VideosRepository(getDatabase(application))
 
-    /**
-     * A playlist of videos displayed on the screen.
-     */
+    //Daftar putar video yang ditampilkan di layar.
     val playlist = videosRepository.videos
 
-    /**
-     * Event triggered for network error. This is private to avoid exposing a
-     * way to set this value to observers.
-     */
+    //jika terjadi kesalahan jaringan maka tidak akan ada pembaruan
     private var _eventNetworkError = MutableLiveData<Boolean>(false)
 
-    /**
-     * Event triggered for network error. Views should use this to get access
-     * to the data.
-     */
+   //jika terjadi kesalahan jarinagn maka Tampilan harus menggunakan ini untuk mendapatkan akses
+   //ke data.
     val eventNetworkError: LiveData<Boolean>
         get() = _eventNetworkError
 
@@ -72,24 +63,17 @@ class DevByteViewModel(application: Application) : AndroidViewModel(application)
      */
     private var _isNetworkErrorShown = MutableLiveData<Boolean>(false)
 
-    /**
-     * Flag to display the error message. Views should use this to get access
-     * to the data.
-     */
+    //menampilkan pesan kesalahan,Tampilan harus menggunakan ini untuk mendapatkan akses
+    //ke data.
     val isNetworkErrorShown: LiveData<Boolean>
         get() = _isNetworkErrorShown
 
-    /**
-     * init{} is called immediately when this ViewModel is created.
-     */
+    //pemanggilan saat ViewModel ini dibuat.
     init {
         refreshDataFromRepository()
     }
 
-    /**
-     * Refresh data from the repository. Use a coroutine launch to run in a
-     * background thread.
-     */
+   //refresh data dari repositori ,coroutine untuk berjalan di utas latar belakang.
     private fun refreshDataFromRepository() {
         viewModelScope.launch {
             try {
@@ -98,23 +82,19 @@ class DevByteViewModel(application: Application) : AndroidViewModel(application)
                 _isNetworkErrorShown.value = false
 
             } catch (networkError: IOException) {
-                // Show a Toast error message and hide the progress bar.
+                // Tampilkan pesan kesalahan
                 if(playlist.value.isNullOrEmpty())
                     _eventNetworkError.value = true
             }
         }
     }
 
-    /**
-     * Resets the network error flag.
-     */
+    //Mereset kesalahan jaringan.
     fun onNetworkErrorShown() {
         _isNetworkErrorShown.value = true
     }
 
-    /**
-     * Factory for constructing DevByteViewModel with parameter
-     */
+    //untuk membuat DevByteViewModel dengan parameter
     class Factory(val app: Application) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(DevByteViewModel::class.java)) {

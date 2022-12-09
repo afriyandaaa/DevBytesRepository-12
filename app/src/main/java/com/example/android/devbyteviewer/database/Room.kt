@@ -19,18 +19,20 @@ package com.example.android.devbyteviewer.database
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.*
-
+//metode pembantu untuk mengakses database
 @Dao
 interface VideoDao {
+    //untuk mengambil semua video dari database
     @Query("select * from databasevideo")
+    //mengubah jenis pengembalian metode ini menjadi LiveData
     fun getVideos(): LiveData<List<DatabaseVideo>>
-
+    //untuk memasukkan daftar video yang diambil dari jaringan ke dalam database.
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll( videos: List<DatabaseVideo>)
 }
 
 
-
+//untuk cache offline dengan mengimplementasikan RoomDatabase.
 @Database(entities = [DatabaseVideo::class], version = 1)
 abstract class VideosDatabase: RoomDatabase() {
     abstract val videoDao: VideoDao
